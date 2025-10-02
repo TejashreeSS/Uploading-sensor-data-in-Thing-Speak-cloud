@@ -1,4 +1,6 @@
-# Uploading temperature sensor data in Thing Speak cloud
+# NAME: TEJASHREE SS
+# REG NO: 212224100058
+# EXP NO 3: Uploading temperature sensor data in Thing Speak cloud
 
 # AIM:
 To monitor the temperature sensor data in the Thing speak using an ESP32 controller.
@@ -69,14 +71,70 @@ Automatically act on your data and communicate using third-party services like T
 
 ![image](https://user-images.githubusercontent.com/71547910/235334056-3ba9579f-2f62-43b1-a714-8fde6cf9ef32.png)
 
-
 # PROGRAM:
+```
+#include "ThingSpeak.h"
+#include <WiFi.h>
+#include "DHT.h"
 
+char ssid[]="slytherinn";
+char pass[]="26062007";
+
+const int out=2;
+float temperature=0;
+float humidity=0;
+WiFiClient client;
+DHT dht(out,DHT11);
+
+unsigned long myChannelField=3087438 ;
+const int TemperatureField=1;
+const int HumidityField=2;
+const char* myWriteAPIKey = "SFHYK4756EM7OEEA";
+void setup()
+{
+  Serial.begin(115200);
+  ThingSpeak.begin(client);
+  dht.begin();
+  pinMode(out,INPUT);
+}
+void loop()
+{ 
+  if(WiFi.status()!=WL_CONNECTED)
+{
+  Serial.print("Attempting to connect to SSID: ");
+  Serial.println(ssid);
+  while (WiFi.status()!=WL_CONNECTED)
+  {
+    WiFi.begin(ssid,pass);
+    Serial.print(".");
+    delay(5000);
+  }
+  Serial.println("\nConnected.");
+}
+  temperature = dht.readTemperature();
+  humidity = dht.readHumidity();
+
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.println(" C");
+
+  Serial.print("Humidity: ");
+Serial.print(humidity);
+  Serial.println(" g.m-3");
+ThingSpeak.setField(TemperatureField,temperature);
+ThingSpeak.setField(HumidityField,humidity);
+ThingSpeak.writeFields(myChannelField,myWriteAPIKey);
+delay(5000);
+}
+```
 # CIRCUIT DIAGRAM:
+![WhatsApp Image 2025-10-02 at 19 27 58_b772eb25](https://github.com/user-attachments/assets/47725320-2665-4832-a39a-a7722665fc2a)
 
 # OUTPUT:
+<img width="1919" height="1021" alt="Screenshot 2025-09-30 120853" src="https://github.com/user-attachments/assets/a721a03e-c3f0-4750-889a-b15699e71cfb" />
+
+<img width="1899" height="872" alt="Screenshot 2025-09-30 120924" src="https://github.com/user-attachments/assets/a52a9bd0-dc88-479d-a753-ee9b84574fa4" />
 
 # RESULT:
-
 Thus the temperature sensor values are updated in the Thing speak using ESP32 controller.
 
