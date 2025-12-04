@@ -78,7 +78,7 @@ Automatically act on your data and communicate using third-party services like T
 #include "DHT.h"
 
 char ssid[]="slytherinn";
-char pass[]="26062007";
+char pass[]="****";
 
 const int out=2;
 float temperature=0;
